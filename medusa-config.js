@@ -47,34 +47,18 @@ const modules = {
         }
       ]
     }
-  },
-  [Modules.NOTIFICATION]: {
-    resolve: '@medusajs/medusa/notification',
-    options: {
-      providers: [
-        {
-          resolve: './modules/resend-notification',
-          id: 'resend-notification',
-          options: {
-            channels: ['email'],
-            apiKey: process.env.RESEND_API_KEY,
-            fromEmail: process.env.RESEND_FROM_EMAIL,
-            replyToEmail: process.env.RESEND_REPLY_TO_EMAIL,
-            toEmail: process.env.TO_EMAIL,
-            enableEmails: process.env.ENABLE_EMAIL_NOTIFICATIONS
-          }
-        }
-      ]
-    }
   }
 };
 
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
-    database_extra: { ssl: { rejectUnauthorized: false } },
-    database_driver_options: {
-      connection: { ssl: { rejectUnauthorized: false } },
+    database_type: "postgres",
+    database_extra: {
+      ssl: {
+        rejectUnauthorized: false,
+        checkServerIdentity: () => undefined
+      }
     },
     http: {
       storeCors: process.env.STORE_CORS,
